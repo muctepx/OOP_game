@@ -14,7 +14,7 @@ public abstract class Mag extends Human {
 
     @Override
     public void step(ArrayList<Human> team1, ArrayList<Human> team2) {
-        if (state.equals("Die") || mana <= 0) return;
+        if (!state.equals("Die") || mana <= 0) return;
         Human victim = findVeryIll(team1);
         victim.getDamage(damageMin);
         mana -= 1;
@@ -31,15 +31,15 @@ public abstract class Mag extends Human {
         // }
         // cartridges--;
     }
-
+/**Поиск наиболее поврежденного персонажа (отношение текущего НР к своиму MaxHP) */
     protected Human findVeryIll(ArrayList<Human> team){
         double minHp = Double.MAX_VALUE;
         int index = 0;
         for (int i = 0; i < team.size(); i++) {
             Human pers = team.get(i);
-            if(minHp > team.get(i).maxHp - team.get(i).hp) {
+            if(minHp > pers.hp/pers.maxHp) {
                 index = i;
-                minHp = team.get(i).maxHp - team.get(i).hp;
+                minHp = pers.hp/pers.maxHp;
             }
         }
         return team.get(index);
