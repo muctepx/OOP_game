@@ -12,7 +12,7 @@ public abstract class Warrior extends Human {
     @Override
     public boolean step(ArrayList<Human> team1, ArrayList<Human> team2) {
         if (state.equals("Die"))
-            return false;
+            return true;
         Human victim = team2.get(findNearest(team2));
         if (victim.coords.getDistance(coords) < 2) {
             float damage = (victim.defense - attack) > 0 ? damageMin
@@ -34,6 +34,6 @@ public abstract class Warrior extends Human {
                 }
             }
         }
-        return true;
+        return false;
     }
 }

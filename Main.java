@@ -1,7 +1,7 @@
 import Unit.*;
 
 import java.util.ArrayList;
-import java.util.Collections;
+// import java.util.Collections;
 import java.util.Comparator;
 import java.util.Random;
 import java.util.Scanner;
@@ -13,38 +13,39 @@ public class main {
     public static ArrayList<Human> darkTeam = new ArrayList<>();
 
     public static void main(String[] args) {
-        Scanner user_input = new Scanner(System.in);
-        System.out.print("Press Enter to begin.");
-        user_input.nextLine();
-        createTeam(holyTeam, 0, 1);
-        createTeam(darkTeam, 3, 10);
-        allTeam.addAll(holyTeam);
-        allTeam.addAll(darkTeam);
-        sortTeam(allTeam);
-        boolean a = true;
-        int countHoly = 0;
-        int countDark = 0;
-        while (a) {
-            View.view();
+        try (Scanner user_input = new Scanner(System.in)) {
+            System.out.print("Press Enter to begin.");
             user_input.nextLine();
-            countHoly = 0;
-            countDark = 0;
-            for (Human human : allTeam) {
-                if (holyTeam.contains(human)) {
-                    if (human.step(holyTeam, darkTeam))
-                        countHoly++;
-                } else {
-                    if ((human.step(darkTeam, holyTeam)))
-                        countDark++;
-                };
+            createTeam(holyTeam, 0, 1);
+            createTeam(darkTeam, 3, 10);
+            allTeam.addAll(holyTeam);
+            allTeam.addAll(darkTeam);
+            sortTeam(allTeam);
+            boolean a = true;
+            int countBlue = 0;
+            int countGreen = 0;
+            while (a) {
+                View.view();
+                user_input.nextLine();
+                countBlue = 0;
+                countGreen = 0;
+                for (Human human : allTeam) {
+                    if (holyTeam.contains(human)) {
+                        if (human.step(holyTeam, darkTeam))
+                            countBlue++;
+                    } else {
+                        if ((human.step(darkTeam, holyTeam)))
+                            countGreen++;
+                    };
+                }
+                if (countBlue == UNITS || countGreen == UNITS)
+                    a = false;
             }
-            if (countHoly == UNITS || countDark == UNITS)
-                a = false;
-        }
-        if (countHoly == UNITS)
-            System.out.print("darkTeam wins");
-        else {
-            System.out.print("holyTeam wins");
+            if (countBlue == UNITS)
+                System.out.print("greenTeam wins");
+            else {
+                System.out.print("blueTeam wins");
+            }
         }
     }
 
