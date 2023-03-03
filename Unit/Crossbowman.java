@@ -1,13 +1,8 @@
-package OOP.Other.Unit;
+package Unit;
 
+//import java.util.ArrayList;
 
 public class Crossbowman extends Shooter {
-
-    protected Crossbowman(String name, float hp, int maxHp, int attack, int damageMin, int damageMax, int defense,
-                       int speed, int cartridges, int range, int posX, int posY) {
-        super(name, hp, maxHp, attack, damageMin, damageMax, defense, speed, cartridges, range, posX, posY);
-    }
-
     public Crossbowman(String name, Vector2D coords) {
         super(name, 60.f, 60, 7, 3, 7, 4,
                 9, 20, 10, coords.posX, coords.posY);

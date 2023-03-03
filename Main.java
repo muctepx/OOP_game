@@ -1,35 +1,50 @@
-package OOP.Other;
+import Unit.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Random;
 import java.util.Scanner;
 
-import OOP.Other.Unit.*;
-
-public class Main {
+public class main {
     static final int UNITS = 10;
+    public static ArrayList<Human> allTeam = new ArrayList<>();
+    public static ArrayList<Human> holyTeam = new ArrayList<>();
+    public static ArrayList<Human> darkTeam = new ArrayList<>();
 
     public static void main(String[] args) {
-
-        ArrayList<Human> holyTeam = new ArrayList<>();
-        ArrayList<Human> darkTeam = new ArrayList<>();
-        ArrayList<Human> allTeam = new ArrayList<>();
         Scanner user_input = new Scanner(System.in);
+        System.out.print("Press Enter to begin.");
+        user_input.nextLine();
         createTeam(holyTeam, 0, 1);
         createTeam(darkTeam, 3, 10);
         allTeam.addAll(holyTeam);
         allTeam.addAll(darkTeam);
         sortTeam(allTeam);
-
-        String stop = "";
-        while (stop.equals("")) {
+        boolean a = true;
+        int countHoly = 0;
+        int countDark = 0;
+        while (a) {
+            View.view();
+            user_input.nextLine();
+            countHoly = 0;
+            countDark = 0;
             for (Human human : allTeam) {
-                if (holyTeam.contains(human)) human.step(holyTeam, darkTeam);
-                else human.step(darkTeam, holyTeam);
+                if (holyTeam.contains(human)) {
+                    if (human.step(holyTeam, darkTeam))
+                        countHoly++;
+                } else {
+                    if ((human.step(darkTeam, holyTeam)))
+                        countDark++;
+                };
             }
-            allTeam.forEach(n -> System.out.println(n.getInfo()));
-            stop = user_input.nextLine();
+            if (countHoly == UNITS || countDark == UNITS)
+                a = false;
+        }
+        if (countHoly == UNITS)
+            System.out.print("darkTeam wins");
+        else {
+            System.out.print("holyTeam wins");
         }
     }
 
@@ -41,18 +56,21 @@ public class Main {
                     team.add(new Sniper(getName(), new Vector2D(i + 1, posY)));
                     break;
                 case (1):
-                    team.add(new Rogue(getName(), new Vector2D(i + 1, posY)));
+                    team.add(new Bandit(getName(), new Vector2D(i + 1, posY)));
                     break;
                 case (2):
-                    team.add(new Priest(getName(), new Vector2D(i + 1, posY)));
+                    // team.add(new Sniper(getName(), new Vector2D(i + 1, posY)));
+                    team.add(new Witch(getName(), new Vector2D(i + 1, posY)));
                     break;
                 case (3):
                     team.add(new Farmer(getName(), new Vector2D(i + 1, posY)));
                     break;
                 case (4):
+                    // team.add(new Sniper(getName(), new Vector2D(i + 1, posY)));
                     team.add(new Crossbowman(getName(), new Vector2D(i + 1, posY)));
                     break;
                 case (5):
+                    // team.add(new Sniper(getName(), new Vector2D(i + 1, posY)));
                     team.add(new Monk(getName(), new Vector2D(i + 1, posY)));
                     break;
                 case (6):
@@ -66,14 +84,15 @@ public class Main {
         team.sort(new Comparator<Human>() {
             @Override
             public int compare(Human t0, Human t1) {
-                if (t1.getSpeed() == t0.getSpeed()) return (int) (t1.getHp() - t0.getHp());
-                else return (int) (t1.getSpeed() - t0.getSpeed());
+                if (t1.getSpeed() == t0.getSpeed())
+                    return (int) (t1.getHp() - t0.getHp());
+                else
+                    return (int) (t1.getSpeed() - t0.getSpeed());
             }
         });
     }
 
     static String getName() {
-        String name = String.valueOf(Names.values()[new Random().nextInt(Names.values().length - 1)]);
-        return name;
+        return String.valueOf(Names.values()[new Random().nextInt(Names.values().length - 1)]);
     }
 }

@@ -1,9 +1,8 @@
-package OOP.Other.Unit;
-
+package Unit;
 
 import java.util.ArrayList;
 
-public abstract class Human implements Interface {
+public abstract class Human implements GameInterface {
     protected String name;
     protected float hp;
     protected int maxHp;
@@ -14,9 +13,22 @@ public abstract class Human implements Interface {
     protected int speed;
     protected Vector2D coords;
     protected String state;
+    protected static int heroCnt;
+
+    @Override
+    public String toString() {
+        return name +
+                " H:" + Math.round(hp) +
+                " D:" + defense +
+                " A:" + attack +
+                " Dmg:" + Math.round(Math.abs((damageMin+damageMax)/2)) +
+                " " + state;
+    }
+
+    public int[] getCoords() {return new int[]{coords.posX, coords.posY};}
 
     protected Human(String name, float hp, int maxHp, int attack, int damageMin,
-                 int damageMax, int defense, int speed, int posX, int posY) {
+                    int damageMax, int defense, int speed, int posX, int posY) {
         this.name = name;
         this.hp = hp;
         this.maxHp = maxHp;
@@ -27,17 +39,18 @@ public abstract class Human implements Interface {
         this.speed = speed;
         coords = new Vector2D(posX, posY);
         state = "Stand";
+        heroCnt++;
     }
 
-    public int getSpeed() { return this.speed; }
-    public float getHp () { return this.hp; }
+    public int getSpeed() { return speed;}
+    public float getHp() { return hp;}
     @Override
-    public void step(ArrayList<Human> team1, ArrayList<Human> team2) { }
-    protected int findNearest(ArrayList<Human> team){
-        double min = Double.MAX_VALUE;
+    public boolean step(ArrayList<Human> team1, ArrayList<Human> team2) {return true;}
+    public int findNearest(ArrayList<Human> team){
         int index = 0;
+        double min = Double.MAX_VALUE;
         for (int i = 0; i < team.size(); i++) {
-            if(min > coords.getDistance(team.get(i).coords)) {
+            if(min > coords.getDistance(team.get(i).coords) && !team.get(i).state.equals("Die")) {
                 index = i;
                 min = coords.getDistance(team.get(i).coords);
             }
@@ -57,4 +70,5 @@ public abstract class Human implements Interface {
     public StringBuilder getInfo() {
         return new StringBuilder("");
     }
+
 }
